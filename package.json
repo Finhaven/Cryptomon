@@ -1,0 +1,55 @@
+{
+  "name": "luna",
+  "version": "1.0.0",
+  "description": "Demo app for teaching Solidity & Web3",
+  "author": "Brooklyn Zelenka <brooklyn@finhaven.com> (@expede)",
+  "license": "Apache-2.0",
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Finhaven/Luna.git"
+  },
+  "homepage": "https://github.com/Finhaven/Luna#readme",
+  "bugs": {
+    "url": "https://github.com/Finhaven/DealToken/issues"
+  },
+  "scripts": {
+    "postinstall": "echo \"\n\n\n\ncontracts included in this project require compilation on a fresh checkout: npm run truffle:compile\n\n\n\n\"",
+    "pretest": "./ensure-ganache-running.sh || (npm run start:testrpc &)",
+    "test": "truffle test",
+    "test:lint": "eslint -c .eslintrc . --color=true --quiet",
+    "test:lint:fix": "eslint -c .eslintrc . --color=true --quiet --fix",
+    "truffle:compile": "truffle compile",
+    "start:testrpc": "ganache-cli -u 0 -s frontier-seed",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "test": "contracts/*,test/*",
+    "test:truffle": {
+      "patterns": [
+        "truffle"
+      ],
+      "extensions": "js,json,sol"
+    }
+  },
+  "engines": {
+    "node": "8.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "ganache-cli": "^6.1.0",
+    "mocha": "^5.0.5",
+    "npm-watch": "^0.3.0",
+    "solhint": "^1.1.10",
+    "solidity-coverage": "^0.4.14",
+    "truffle": "^4.1.3",
+    "zeppelin-solidity": "1.3.0"
+  },
+  "dependencies": {
+    "ethereumjs-tx": "^1.3.4",
+    "solc": "^0.4.21",
+    "web3": "^1.0.0-beta.34"
+  }
+}
