@@ -4,7 +4,7 @@
   "description": "Demo app for teaching Solidity & Web3",
   "author": "Brooklyn Zelenka <brooklyn@finhaven.com> (@expede)",
   "license": "Apache-2.0",
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/Finhaven/Luna.git"
   },
