@@ -20,46 +20,81 @@ contract Critter is Ownable {
         Water
     }
 
-      event .........
+    event Heal(
+        address indexed healed,
+        address indexed healer,
+        uint256         amount
+    );
+
+    event Hit(
+        address indexed defender,
+        address indexed attacker,
+        uint256         amount,
+        uint256         reward
+    );
+
+    event Died(address indexed who);
 
     constructor(string _name, Element _element) public {
       name = _name;
       element = _element;
     }
 
-    modifier onlyLiving() {
-        require hitPoints > 0;
+    modifier onlyActive() {
+      require(active, "Critter not active");
         _;
     }
 
-    function attack(Critter _enemy) public onlyOwner onlyLiving {
-        _enemy.receive(element, power);
+    function attack(Critter _target) public onlyOwner onlyActive {
+        _target.receive(element);
+        active = false;
     }
 
-    function heal(uint256 _hp) public onlyOwner onlyLiving {
-      require(power > _hp);
+    function selfHeal(uint256 _amount) public onlyOwner onlyActive {
+        require(power >= _amount, "Not enough power");
 
-      power = power.sub(_hp);
-      hitPoints = hitPoints.add(_hp);
+        power = power.sub(_amount);
+        heal(this, _amount);
+
+        active = false;
     }
 
     function receive(Element _attackElement) external returns (uint256 _reward) {
+        require(hitPoints > 0, "Critter not alive");
+
+        active = true;
+        power += 3;
+
         if (element == _attackElement) {
             hitPoints.add(10);
             return 2;
         }
 
-        // 00 -> 0
-        // 01 -> 0
-        // 10 -> 1
-        // 11 -> 1
+        // 00, 01 -> 0
+        // 10, 11 -> 1
         if ((uint(element) >> 1) == (uint(_attackElement) >> 1)) {
-            hitPoints.sub(25);
+            damage(25);
             return 10;
         }
 
-        hitPoints.sub(10);
+        damage(10);
         return 5;
     }
 
+    function heal(address _healer, uint256 _amount) internal {
+        hitPoints = hitPoints.add(_amount);
+        emit Heal(this, _healer, _amount);
+    }
+
+    function damage(address _attacker, uint256 _amount) internal {
+        event Hit(this, attacker, _amount);
+
+        if (_amount < hitPoints) {
+            hitPoints -= _amount;
+        } else {
+            hitPoints = 0;
+            active = false;
+            emit Died(this);
+        }
+    }
 }
