@@ -29,8 +29,7 @@ contract Critter is Ownable {
     event Hit(
         address indexed defender,
         address indexed attacker,
-        uint256         amount,
-        uint256         reward
+        uint256         amount
     );
 
     event Died(address indexed who);
@@ -73,11 +72,11 @@ contract Critter is Ownable {
         // 00, 01 -> 0
         // 10, 11 -> 1
         if ((uint(element) >> 1) == (uint(_attackElement) >> 1)) {
-            damage(25);
+            damage(msg.sender, 25);
             return 10;
         }
 
-        damage(10);
+        damage(msg.sender, 10);
         return 5;
     }
 
@@ -87,7 +86,7 @@ contract Critter is Ownable {
     }
 
     function damage(address _attacker, uint256 _amount) internal {
-        event Hit(this, attacker, _amount);
+        emit Hit(this, _attacker, _amount);
 
         if (_amount < hitPoints) {
             hitPoints -= _amount;
