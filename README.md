@@ -1,4 +1,4 @@
-# Cryptomon
+# Cryptomon 🏔🌪🔥🌊
 
 [![CircleCI](https://circleci.com/gh/Finhaven/Cryptomon/tree/master.svg?style=svg)](https://circleci.com/gh/Finhaven/Cryptomon/tree/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5e696ad902abc5e35858/maintainability)](https://codeclimate.com/github/Finhaven/Cryptomon/maintainability)
@@ -74,7 +74,11 @@ const command = (funName, args = []) => {
   }).then(res => console.log(JSON.stringify(res)));
 };
 
+command('name');
+// => "Hydroge"
+
 command('selfHeal', [2]);
+// => {}
 ```
 
 ![](https://i.ytimg.com/vi/oNIKXYtCqC4/maxresdefault.jpg)
