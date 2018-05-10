@@ -9,8 +9,8 @@ contract Critter is Ownable {
     string public name;
     Element private element;
 
-    uint256 public hitPoints = 100;
-    uint256 public power = 10;
+    uint256 public hp = 100;
+    uint256 public mp = 10;
     bool private active = true;
 
     enum Element {
@@ -40,7 +40,7 @@ contract Critter is Ownable {
     }
 
     modifier onlyActive() {
-      require(active, "Critter not active");
+        require(active, "Critter not active");
         _;
     }
 
@@ -50,22 +50,22 @@ contract Critter is Ownable {
     }
 
     function selfHeal(uint256 _amount) public onlyOwner onlyActive {
-        require(power >= _amount, "Not enough power");
+        require(mp >= _amount, "Not enough MP");
 
-        power = power.sub(_amount);
+        mp = power.sub(_amount);
         heal(this, _amount);
 
         active = false;
     }
 
     function receive(Element _attackElement) external returns (uint256 _reward) {
-        require(hitPoints > 0, "Critter not alive");
+        require(hp > 0, "Not enough HP");
 
         active = true;
-        power += 3;
+        mp += 3;
 
         if (element == _attackElement) {
-            hitPoints.add(10);
+            hp.add(10);
             return 2;
         }
 
@@ -81,17 +81,17 @@ contract Critter is Ownable {
     }
 
     function heal(address _healer, uint256 _amount) internal {
-        hitPoints = hitPoints.add(_amount);
+        hp = hp.add(_amount);
         emit Heal(this, _healer, _amount);
     }
 
     function damage(address _attacker, uint256 _amount) internal {
         emit Hit(this, _attacker, _amount);
 
-        if (_amount < hitPoints) {
-            hitPoints -= _amount;
+        if (_amount < hp) {
+            hp -= _amount;
         } else {
-            hitPoints = 0;
+            hp = 0;
             active = false;
             emit Died(this);
         }
