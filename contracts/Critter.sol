@@ -52,7 +52,7 @@ contract Critter is Ownable {
     function selfHeal(uint256 _amount) public onlyOwner onlyActive {
         require(mp >= _amount, "Not enough MP");
 
-        mp = power.sub(_amount);
+        mp = mp.sub(_amount);
         heal(this, _amount);
 
         active = false;

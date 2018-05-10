@@ -1,7 +1,7 @@
-# Luna
+# Cryptomon
 
-[![CircleCI](https://circleci.com/gh/Finhaven/Luna/tree/master.svg?style=svg)](https://circleci.com/gh/Finhaven/Luna/tree/master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/5e696ad902abc5e35858/maintainability)](https://codeclimate.com/github/Finhaven/Luna/maintainability)
+[![CircleCI](https://circleci.com/gh/Finhaven/Cryptomon/tree/master.svg?style=svg)](https://circleci.com/gh/Finhaven/Cryptomon/tree/master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5e696ad902abc5e35858/maintainability)](https://codeclimate.com/github/Finhaven/Cryptomon/maintainability)
 
 Finhaven tokens and other [Ethereum](https://ethereum.org) smart contracts
 
@@ -24,15 +24,14 @@ We are using the [Truffle Framework](http://truffleframework.com/)
 However, if you change smart contracts, you will need to recompile them. You can do this with
 
 ```shell
-> truffle compile
-> truffle migrate
+> npm run truffle:compile
 ```
 
 ![](https://ethereum.org/images/logos/ETHEREUM-LOGO_LANDSCAPE_Black_small.png)
 
 ## Local REPL
 
-```bash
+```shell
 > ganache-cli
 ```
 
@@ -46,30 +45,36 @@ const CritterFile = fs.readFileSync('./build/contracts/Critter.json');
 const {abi, bytecode} = JSON.parse(CritterFile);
 
 let accounts;
-web3.eth.getAccounts().then(as => accounts = as);
+web3.eth.getAccounts().then(accs => {
+  accounts = accs
+});
 
 // Prove that it worked
 accounts; 
 
-let squirtle;
+let hydroge;
 new web3.eth.Contract(abi).deploy({
     data: bytecode,
-    arguments: ["Squirtle", 1]
+    arguments: ["Hydroge", 1]
   }).send({
     from: accounts[0],
     gas: "1000000"
-  }).then(result => squirtle = result);
+  }).then(deployed => {
+    hydroge = deployed;
+  });
 
 // Prove that it worked
-squirtle; 
+hydroge; 
 
-// squirtle.methods.name().call({ from: accounts[0] }).then(res => console.log(JSON.stringify(res)));
+// hydroge.methods.name().call({ from: accounts[0] }).then(res => console.log(JSON.stringify(res)));
 
 const command = (funName, args = []) => {
-  squirtle.methods[funName](...args).call({
+  hydroge.methods[funName](...args).call({
     from: accounts[0]
   }).then(res => console.log(JSON.stringify(res)));
 };
 
 command('selfHeal', [2]);
 ```
+
+![](https://i.ytimg.com/vi/oNIKXYtCqC4/maxresdefault.jpg)
